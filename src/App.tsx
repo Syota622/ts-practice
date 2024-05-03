@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import UserTable from './components/UserTable';
+import StudentTable from './components/StudentTable';
 
 const USER_LIST = [
   { id: 1, name: "鈴木太郎", role: "student", email: "test1@happiness.com", age: 26, postCode: "100-0003", phone: "0120000001", hobbies: ["旅行", "食べ歩き", "サーフィン"], url: "https://aaa.com", studyMinutes: 3000, taskCode: 101, studyLangs: ["Rails", "Javascript"], score: 68 },
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <UserTable users={USER_LIST} />
+      <StudentTable users={USER_LIST} />
     </div>
   );
 }
