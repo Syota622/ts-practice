@@ -34,8 +34,8 @@ const MentorTable: React.FC<MentorTableProps> = ({ users }) => {
   // メンターだけを抽出して、ソートする
   const sortedMentors = [...users].filter(user => user.role === 'mentor').sort((a, b) => {
     if (!sortConfig) return 0;
-    const aValue = a[sortConfig.key] ?? 0; // Nullish coalescing operator for handling undefined
-    const bValue = b[sortConfig.key] ?? 0; // Nullish coalescing operator for handling undefined
+    const aValue = a[sortConfig.key] ?? 0; // undefinedである場合のデフォルト値を0に設定
+    const bValue = b[sortConfig.key] ?? 0; // undefinedである場合のデフォルト値を0に設定
     if (aValue < bValue) {
       return sortConfig.direction === 'ascending' ? -1 : 1;
     }
