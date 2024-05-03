@@ -15,6 +15,10 @@ interface User {
   taskCode?: number;
   studyLangs?: string[];
   score?: number;
+  experienceDays?: number;
+  useLangs?: string[];
+  availableStartCode?: number;
+  availableEndCode?: number;
 }
 
 interface StudentTableProps {
@@ -22,6 +26,7 @@ interface StudentTableProps {
 }
 
 const StudentTable: React.FC<StudentTableProps> = ({ users }) => {
+    
   // 勉強時間かハピネススコアでソートする
   // studyMinutes: 勉強時間、score: ハピネススコア
   const [sortConfig, setSortConfig] = useState<{ key: 'studyMinutes' | 'score'; direction: 'ascending' | 'descending' } | null>(null);
@@ -47,6 +52,17 @@ const StudentTable: React.FC<StudentTableProps> = ({ users }) => {
     setSortConfig({ key, direction });
   };
 
+  // 課題番号が、担当範囲に含まれているメンターの名前を表示
+  const getMentorsForMentor = (student: User) => {
+    return users.filter(mentor =>
+      mentor.role === 'mentor' &&
+      mentor.availableStartCode !== undefined && // availableStartCodeがundefinedでないことを確認
+      mentor.availableEndCode !== undefined && // availableEndCodeがundefinedでないことを確認
+      mentor.availableStartCode <= student.taskCode! &&
+      mentor.availableEndCode >= student.taskCode!
+    ).map(mentor => mentor.name).join(", ");
+  };
+
   return (
     <div>
       <div>
@@ -70,7 +86,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ users }) => {
               <td>{student.taskCode}</td>
               <td>{student.studyLangs?.join(", ")}</td>
               <td>{student.score}</td>
-              <td>{/* 対応可能なメンター */}</td>
+              <td>{getMentorsForMentor(student)}</td>
             </tr>
           ))}
         </tbody>
