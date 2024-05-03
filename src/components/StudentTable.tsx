@@ -1,6 +1,5 @@
 import React from 'react';
 
-// UserとUserTablePropsのインターフェースは前述したものと同じです。
 interface User {
   id: number;
   name: string;
@@ -30,7 +29,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ users }) => {
   const students = users.filter(user => user.role === 'student');
 
   // 課題番号が、担当範囲に含まれているメンターの名前を表示
-  const getMentorsForStudent = (student: User) => {
+  const getMentorsForMentor = (student: User) => {
     return users.filter(mentor =>
       mentor.role === 'mentor' &&
       mentor.availableStartCode !== undefined && // availableStartCodeがundefinedでないことを確認
@@ -58,7 +57,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ users }) => {
             <td>{student.taskCode}</td>
             <td>{student.studyLangs?.join(", ")}</td>
             <td>{student.score}</td>
-            <td>{getMentorsForStudent(student)}</td>
+            <td>{getMentorsForMentor(student)}</td>
           </tr>
         ))}
       </tbody>
