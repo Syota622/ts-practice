@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User } from '../types'; // User 型をインポート
+import { User } from '../types/userformTypes';
 
 interface FormData {
   name: string;
