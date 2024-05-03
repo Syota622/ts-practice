@@ -3,8 +3,10 @@ import './App.css';
 import UserTable from './components/UserTable';
 import StudentTable from './components/StudentTable';
 import MentorTable from './components/MentorTable';
+import UserForm from './components/UserForm'; // UserFormコンポーネントをインポート
+import { User } from './types'; // User 型をインポート
 
-const USER_LIST = [
+const USER_LIST: User[] = [
   { id: 1, name: "鈴木太郎", role: "student", email: "test1@happiness.com", age: 26, postCode: "100-0003", phone: "0120000001", hobbies: ["旅行", "食べ歩き", "サーフィン"], url: "https://aaa.com", studyMinutes: 3000, taskCode: 101, studyLangs: ["Rails", "Javascript"], score: 68 },
   { id: 2, name: "鈴木二郎", role: "mentor", email: "test2@happiness.com", age: 31, postCode: "100-0005", phone: "0120000002", hobbies: ["サッカー", "ランニング", "筋トレ"], url: "https://bbb.com", experienceDays: 1850, useLangs: ["Next.js", "GoLang"], availableStartCode: 201, availableEndCode: 302 },
   { id: 3, name: "鈴木三郎", role: "student", email: "test3@happiness.com", age: 23, postCode: "300-0332", phone: "0120000003", hobbies: ["アニメ", "ゲーム", "旅行"], url: "https://ccc.com", studyMinutes: 125000, taskCode: 204, studyLangs: ["Rails", "Next.js"], score: 90 },
@@ -15,19 +17,24 @@ const USER_LIST = [
   { id: 8, name: "鈴木八郎", role: "mentor", email: "test8@happiness.com", age: 33, postCode: "100-0009", phone: "0120000008", hobbies: ["ランニング", "旅行"], url: "https://hhh.com", experienceDays: 6000, useLangs: ["Golang", "Rails"], availableStartCode: 301, availableEndCode: 505 },
 ]
 
-const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('all');  // 'all', 'students', 'mentors'
+const App = () => {
+  const [users, setUsers] = useState<User[]>(USER_LIST); // User型の配列として初期化
+  const [activeTab, setActiveTab] = useState('all'); // タブの状態管理
 
-  // タブに応じて表示するコンポーネントを切り替える関数
-  const renderTable = () => {
+  const addUser = (newUser: User) => { // newUserの型をUserに指定
+    newUser.id = users.length + 1; // 簡単なID生成
+    setUsers([...users, newUser]); // 新しいユーザーを既存のリストに追加
+  };
+
+  const renderTable = () => { // タブに応じて表示するテーブルを切り替える関数
     switch (activeTab) {
       case 'students':
-        return <StudentTable users={USER_LIST} />;
+        return <StudentTable users={users} />;
       case 'mentors':
-        return <MentorTable users={USER_LIST} />;
+        return <MentorTable users={users} />;
       case 'all':
       default:
-        return <UserTable users={USER_LIST} />;
+        return <UserTable users={users} />;
     }
   };
 
@@ -38,7 +45,8 @@ const App: React.FC = () => {
         <button onClick={() => setActiveTab('students')}>生徒のみ</button>
         <button onClick={() => setActiveTab('mentors')}>メンターのみ</button>
       </div>
-      {renderTable()}
+      <UserForm addUser={addUser} /> {/* 新規ユーザー登録フォームを表示 */}
+      {renderTable()} {/* アクティブなタブに応じてテーブルを表示 */}
     </div>
   );
 }
