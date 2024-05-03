@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import UserTable from './components/UserTable';
 import StudentTable from './components/StudentTable';
@@ -16,11 +16,29 @@ const USER_LIST = [
 ]
 
 const App: React.FC = () => {
+  const [activeTab, setActiveTab] = useState('all');  // 'all', 'students', 'mentors'
+
+  // タブに応じて表示するコンポーネントを切り替える関数
+  const renderTable = () => {
+    switch (activeTab) {
+      case 'students':
+        return <StudentTable users={USER_LIST} />;
+      case 'mentors':
+        return <MentorTable users={USER_LIST} />;
+      case 'all':
+      default:
+        return <UserTable users={USER_LIST} />;
+    }
+  };
+
   return (
     <div className="App">
-      <UserTable users={USER_LIST} />
-      <StudentTable users={USER_LIST} />
-      <MentorTable users={USER_LIST} />
+      <div>
+        <button onClick={() => setActiveTab('all')}>全員</button>
+        <button onClick={() => setActiveTab('students')}>生徒のみ</button>
+        <button onClick={() => setActiveTab('mentors')}>メンターのみ</button>
+      </div>
+      {renderTable()}
     </div>
   );
 }
