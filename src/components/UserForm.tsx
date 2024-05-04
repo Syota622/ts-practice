@@ -1,24 +1,5 @@
 import React, { useState } from 'react';
-import { User } from '../types/userformTypes';
-
-interface FormData {
-  name: string;
-  role: string; // 'student' または 'mentor'
-  email: string;
-  age: string; // 入力は文字列ですが、数値に変換する必要があります
-  postCode: string;
-  phone: string;
-  hobbies: string; // 文字列ですが、配列に変換する必要があります
-  url: string;
-  studyMinutes: string;
-  taskCode: string;
-  studyLangs: string;
-  score: string;
-  experienceDays: string;
-  useLangs: string;
-  availableStartCode: string;
-  availableEndCode: string;
-}
+import { User, FormData } from '../types/userTypes'; // FormData 型をインポート
 
 interface UserFormProps {
   addUser: (user: User) => void;
@@ -54,31 +35,31 @@ const UserForm = ({ addUser }: UserFormProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.name || !formData.role) {
-      alert('Please fill in all required fields.');
-      return;
+        alert('必須項目をすべて入力してください。');
+        return;
     }
-    
-    // role の値を 'student' または 'mentor' に限定するための型チェックを行います。
-    const roleValidated = formData.role === 'student' || formData.role === 'mentor' ? formData.role : 'student'; // デフォルトを 'student' とする
+
+    // roleが 'student' または 'mentor' のいずれかであることを保証
+    const validRole = formData.role === 'student' || formData.role === 'mentor' ? formData.role : 'student';
 
     const newUser: User = {
-      ...formData,
-      id: 0, // IDはApp.tsxで設定
-      role: roleValidated, // 検証済みの role 値
-      age: parseInt(formData.age, 10),
-      hobbies: formData.hobbies.split(',').map(hobby => hobby.trim()),
-      studyMinutes: parseInt(formData.studyMinutes, 10),
-      taskCode: parseInt(formData.taskCode, 10),
-      studyLangs: formData.studyLangs.split(',').map(lang => lang.trim()),
-      score: parseInt(formData.score, 10),
-      experienceDays: parseInt(formData.experienceDays, 10),
-      useLangs: formData.useLangs.split(',').map(lang => lang.trim()),
-      availableStartCode: parseInt(formData.availableStartCode, 10),
-      availableEndCode: parseInt(formData.availableEndCode, 10)
+        ...formData,
+        id: 0, // IDはApp.tsxで設定
+        role: validRole, // 検証済みの role
+        age: parseInt(formData.age, 10),
+        hobbies: formData.hobbies.split(',').map(hobby => hobby.trim()),
+        studyMinutes: parseInt(formData.studyMinutes, 10),
+        taskCode: parseInt(formData.taskCode, 10),
+        studyLangs: formData.studyLangs.split(',').map(lang => lang.trim()),
+        score: parseInt(formData.score, 10),
+        experienceDays: parseInt(formData.experienceDays, 10),
+        useLangs: formData.useLangs.split(',').map(lang => lang.trim()),
+        availableStartCode: parseInt(formData.availableStartCode, 10),
+        availableEndCode: parseInt(formData.availableEndCode, 10)
     };
     addUser(newUser);
     setFormData(initialFormState);
-  };
+};
 
   return (
     <form onSubmit={handleSubmit}>
