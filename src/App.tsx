@@ -17,9 +17,11 @@ const USER_LIST: User[] = [
   { id: 8, name: "鈴木八郎", role: "mentor", email: "test8@happiness.com", age: 33, postCode: "100-0009", phone: "0120000008", hobbies: ["ランニング", "旅行"], url: "https://hhh.com", experienceDays: 6000, useLangs: ["Golang", "Rails"], availableStartCode: 301, availableEndCode: 505 },
 ]
 
+type Tab = 'all' | 'students' | 'mentors';
+
 const App = () => {
   const [users, setUsers] = useState<User[]>(USER_LIST); // User型の配列として初期化
-  const [activeTab, setActiveTab] = useState('all'); // タブの状態管理
+  const [activeTab, setActiveTab] = useState<Tab>('all'); // タブの状態管理
 
   const addUser = (newUser: User) => { // newUserの型をUserに指定
     newUser.id = users.length + 1; // 簡単なID生成
